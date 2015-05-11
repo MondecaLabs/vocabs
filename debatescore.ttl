@@ -31,7 +31,7 @@
 	vann:preferredNamespaceUri <http://data.vie-publique.fr/debatescore/debate#> ;
 	vann:preferredNamespacePrefix "debate";
 	cc:license <http://creativecommons.org/licenses/by-nc-sa/3.0/us/> ;
-	owl:versionInfo "Version 1.11 - 2014-12-08" .
+	owl:versionInfo "Version 1.11 - 2014-12-08" ;
 	owl:versionInfo "Version 1.12 - 2015-05-11" .
 	
 ### La classe Débat ###
