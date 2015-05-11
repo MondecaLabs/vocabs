@@ -1,0 +1,517 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix xsd:<http://www.w3.org/2001/XMLSchema#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix cc: <http://creativecommons.org/ns#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix igeo: <http://rdf.insee.fr/def/geo#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix debate: <http://data.vie-publique.fr/debatescore/debate#> .
+@prefix status: <http://data.vie-publique.fr/debatescore/status#> .
+@prefix type: <http://data.vie-publique.fr/debatescore/type#> .
+@prefix mode: <http://data.vie-publique.fr/debatescore/mode#> .
+@prefix audience: <http://data.vie-publique.fr/debatescore/audience#> .
+
+### Expression RDF du vocabulaire Debates Core ###
+### RDF vocabulary for Debates Cores #### 
+
+
+<http://data.vie-publique.fr/debatescore/debate>
+	a owl:Ontology ;
+	dcterms:title "Vocabulaire DebatesCore"@fr, "DebatesCore Vocabulary"@en ;
+	dcterms:description "Un vocabulaire de métadonnées pour les débats publics en ligne, étendant le Dublin Core"@fr ;
+	dcterms:issued "2014-10-07" ;
+	dcterms:modified "2014-12-08" ;
+	dcterms:modified "2015-05-11" ;
+	dcterms:publisher [a schema:Organization; schema:name "vie-publique.fr" ; schema:url <http://vie-publique.fr> ];
+	dcterms:contributor [a schema:Person ; schema:name "Olivier Garry"], [a schema:Person ; schema:name "Ghislain Atemezing"] , [a schema:Person ; schema:name "Bernard Vatant"];
+	vann:preferredNamespaceUri <http://data.vie-publique.fr/debatescore/debate#> ;
+	vann:preferredNamespacePrefix "debate";
+	cc:license <http://creativecommons.org/licenses/by-nc-sa/3.0/us/> ;
+	owl:versionInfo "Version 1.11 - 2014-12-08" .
+	owl:versionInfo "Version 1.12 - 2015-05-11" .
+	
+### La classe Débat ###
+### Debate class ####
+
+
+debate:Debate
+	a owl:Class ;
+	rdfs:label "Débat"@fr, "Debate"@en ;
+	skos:definition "Représentation de tout dispositif en ligne (à minima d'information) permettant au public et aux parties prenantes de contribuer/participer à l'élaboration d'une décision publique ou d'une politique publique."@fr ;
+	skos:definition "A model of any service online (at least of information) aiming at giving to citizens and others to contribute/participe in taking public decision or political one "@en ;
+	dcterms:description "A model of any service online (at least of information) aiming at giving to citizens and others to contribute/participe in taking public decision or political one "@en ; 
+	rdfs:comment "A model of any service online (at least of information) aiming at giving to citizens and others to contribute/participe in taking public decision or political one "@en ; 
+	rdfs:subClassOf [a owl:Restriction ; owl:onProperty dcterms:issued ; owl:allValuesFrom xsd:date ] ;
+	rdfs:subClassOf [a owl:Restriction ; owl:onProperty dcterms:title ; owl:cardinality 1 ] ;
+	rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dcterms:type ; 
+										  owl:someValuesFrom [ a owl:Restriction ; 
+															  owl:onProperty  skos:inScheme ; 
+															  owl:hasValue <http://data.vie-publique.fr/debatescore/type> ] ] ;
+	rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dcterms:audience ; 
+										  owl:someValuesFrom [ a owl:Restriction ; 
+															  owl:onProperty  skos:inScheme ; 
+															  owl:hasValue <http://data.vie-publique.fr/debatescore/audience> ] ] ;														  
+	rdfs:subClassOf [ a owl:Restriction ; owl:onProperty dcterms:type ; owl:hasValue <http://purl.org/dc/dcmitype/InteractiveResource> ] ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+### Propriétés utilisées pour décrire un Débat ###
+### Properties used to describe a Debate ###
+
+### Propriétés empruntées au Dublin Core, avec modalités d'utilisation ###
+### Properties from Dublin Core ####
+
+dcterms:title 
+	a owl:DatatypeProperty ;
+	rdfs:label "titre"@fr ;
+	rdfs:label "title"@en ;
+	rdfs:comment "Titre du débat"@fr ;
+	schema:domainIncludes debate:Debate .
+	
+dcterms:alternative
+	a owl:DatatypeProperty ;
+	rdfs:label "titre secondaire"@fr ;
+	rdfs:label "alternative title"@en ;
+	rdfs:comment "Titre secondaire du débat"@fr ;
+	schema:domainIncludes debate:Debate .
+	
+dcterms:identifier
+	a owl:DatatypeProperty ;
+	rdfs:label "identifiant"@fr ;
+	rdfs:label "identifier"@en ;
+	rdfs:comment "Identifiant du débat"@fr ;
+	schema:domainIncludes debate:Debate .
+	
+dcterms:subject 
+	a owl:ObjectProperty ;
+	rdfs:label "sujet"@fr ;
+	rdfs:label "subject"@en ;
+	rdfs:comment "Sujet ou thème du débat. Utiliser les concepts des vocabulaires de référence : VIE-PUBLIQUE, RAMEAU, EUROVOC, etc."@fr ;
+	schema:domainIncludes debate:Debate .
+
+dcterms:issued
+	a owl:DatatypeProperty ;
+	rdfs:label "date de publication"@fr ;
+	rdfs:label "issued date"@en ;
+	rdfs:comment "A utiliser pour la date de mise en ligne du débat"@fr ;
+	rdfs:subPropertyOf dcterms:date ;
+	schema:domainIncludes debate:Debate .
+	
+dcterms:spatial
+	a owl:ObjectProperty ;
+	rdfs:label "zone géographique"@fr ;
+	rdfs:label "spatial extension"@en ;
+	rdfs:comment "Zone géographique concernée par le débat. Utiliser chaque fois que possible des entités du référentiel COG INSEE"@fr ;
+	schema:domainIncludes debate:Debate ;	
+	rdfs:range dcterms:Location .
+	
+dcterms:type
+	a owl:ObjectProperty ;
+	rdfs:label "type de débat"@fr ;
+	rdfs:label "type of debate"@en ;
+	rdfs:comment "Utilise une liste contrôlée"@fr ;
+	schema:domainIncludes debate:Debate .
+	
+dcterms:publisher
+	a owl:ObjectProperty ;
+	rdfs:label "éditeur"@fr ;
+	rdfs:label "publisher"@en ;
+	rdfs:comment "Utiliser pour l'entité en charge de la gestion et de la publication du débat"@fr ;
+	schema:domainIncludes debate:Debate .	
+	
+dcterms:source
+	a owl:ObjectProperty ;
+	rdfs:label "source"@fr ;
+	rdfs:label "source"@en ;
+	rdfs:comment "Un document source du débat"@fr ;
+	schema:domainIncludes debate:Debate .	
+	
+dcterms:rights
+	a owl:ObjectProperty ;
+	rdfs:label "droits de propriété"@fr ;
+	rdfs:label "rights"@en ;
+	rdfs:comment "Un document définissant les termes et condition d'utilisation des contenus du débat"@fr ;
+	schema:domainIncludes debate:Debate .	
+	
+dcterms:language
+	a owl:DatatypeProperty ;
+	rdfs:label "langue"@fr ;
+	rdfs:label "language"@en ;
+	rdfs:comment "Le code de la langue du débat défini par la RFC 3066"@fr ;
+	schema:domainIncludes debate:Debate .	
+	
+dcterms:format
+	a owl:DatatypeProperty ;
+	rdfs:label "format"@fr ;
+	rdfs:label "format"@en ;
+	rdfs:comment "Type MIME de la description du débat, par défaut text/html"@fr ;
+	schema:domainIncludes debate:Debate .	
+	
+dcterms:temporal
+	a owl:ObjectProperty ;
+	rdfs:label "extension temporelle"@fr ;
+	rdfs:label "temporal extension"@en ;
+	rdfs:comment "Période de déroulement du débat"@fr ;
+	rdfs:range dcterms:PeriodOfTime ;
+	schema:domainIncludes debate:Debate .	
+	
+dcterms:audience
+	a owl:ObjectProperty ;
+	rdfs:label "audience"@fr ;
+	rdfs:label "audience"@en ;
+	rdfs:comment "Indique les publics invités à participer au débat. Liste contrôlée."@fr ;
+	rdfs:range dcterms:AgentClass ;
+	schema:domainIncludes debate:Debate .
+
+	
+### Propriétés spécifiques définies par le vocabulaire DebatesCore ###
+### specific properties defined within the vocabulary DebatesCore ###
+
+debate:abstractDescription
+	a owl:DatatypeProperty ;
+	rdfs:subPropertyOf dcterms:abstract ;
+	rdfs:label "résumé documentaire"@fr ;
+	rdfs:label "abstract"@en ;
+	rdfs:comment "Résumé documentaire du débat."@fr ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+
+debate:freeTextDescription
+	a owl:DatatypeProperty ;
+	rdfs:subPropertyOf dcterms:description ;
+	rdfs:label "résumé libre"@fr ;
+	rdfs:label "free text description"@en ;
+	rdfs:comment "Extraits, texte libre de présentation du débat"@fr ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+
+debate:status
+	a owl:ObjectProperty ;
+	rdfs:label "statut du débat"@fr ;
+	rdfs:label "debate status"@en ;
+	rdfs:range [ a owl:Restriction ; owl:onProperty  skos:inScheme ; owl:hasValue <http://data.vie-publique.fr/debatescore/status> ] ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:dateSubmitted
+	a owl:DatatypeProperty ;
+	rdfs:label "date de soumission"@fr ;
+	rdfs:label "date of submission"@en ;
+	rdfs:comment "Date de saisine/soumission pour le lancement du débat"@fr ;
+	rdfs:subPropertyOf dcterms:dateSubmitted  ;
+	rdfs:domain debate:Debate ;
+	rdfs:range xsd:date ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:dateAccepted
+	a owl:DatatypeProperty ;
+	rdfs:label "date de décision de lancement"@fr ;
+	rdfs:label "date decision accepted"@en ;
+	rdfs:comment "Date de décision pour le lancement du débat. S'utilise dans le cas où l'organisme en charge du débat fait l'objet d'une saisine formelle d'organisation du débat (exemple CNDP)"@fr ;
+	rdfs:subPropertyOf dcterms:dateAccepted ;
+	rdfs:domain debate:Debate ;
+	rdfs:range xsd:date ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:disposalDate
+	a owl:DatatypeProperty ;
+	rdfs:label "date de fin de mise à disposition"@fr ;
+	rdfs:label "disposal date"@en ;
+	rdfs:comment "Permet d'indiquer la date de fin de mise à dispostion au public du débat, notamment pour automatisation des retraits de mise en ligne par l'informatique"@fr ;
+	rdfs:subPropertyOf dcterms:date ;
+	rdfs:domain debate:Debate ;
+	rdfs:range xsd:date ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:location
+	a owl:ObjectProperty ;
+	rdfs:label "localisation"@fr ;
+	rdfs:label "location"@en ;
+	rdfs:comment "Lieu physique du débat. Utiliser chaque fois que possible des entités du référentiel COG INSEE"@fr ;
+	rdfs:domain debate:Debate ;
+	rdfs:range dcterms:Location ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+
+debate:participationMode
+	a owl:ObjectProperty ;
+	rdfs:label "mode de participation"@fr ;
+	rdfs:label "participation mode"@en ;
+	rdfs:comment "Indique si le débat est en ligne ou présentiel"@fr ;
+	rdfs:domain debate:Debate ;
+	rdfs:range [ a owl:Restriction ; owl:onProperty  skos:inScheme ; owl:hasValue <http://data.vie-publique.fr/debatescore/mode> ] ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:creatorPerson
+	a owl:ObjectProperty ;
+	rdfs:label "créateur personne physique"@fr ;
+	rdfs:label "creator person"@en ;
+	rdfs:comment "Maîtrise d'ouvrage / initiateur / responsable du débat - personne physique"@fr ;
+	rdfs:subPropertyOf dcterms:creator ;
+	rdfs:domain debate:Debate ;
+	rdfs:range prov:Person ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:creatorCorporate
+	a owl:ObjectProperty ;
+	rdfs:label "créateur personne morale"@fr ;
+	rdfs:label "creator corporate"@en ;
+	rdfs:comment "Maîtrise d'ouvrage / initiateur / responsable du débat - personne morale"@fr ;
+	rdfs:subPropertyOf dcterms:creator ;
+	rdfs:domain debate:Debate ;
+	rdfs:range prov:Organization ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:contributorPerson
+	a owl:ObjectProperty ;
+	rdfs:label "contributeur personne physique"@fr ;
+	rdfs:label "A person contributor"@en ;
+	rdfs:comment "Personne physique contribuant à la réalisation du débat"@fr ;
+	rdfs:subPropertyOf dcterms:contributor ;
+	rdfs:domain debate:Debate ;
+	rdfs:range prov:Person ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:contributorCorporate
+	a owl:ObjectProperty ;
+	rdfs:label "contributeur personne morale"@fr ;
+	rdfs:label "A corporate contributor"@en ;
+	rdfs:comment "Personne morale contribuant à la réalisation du débat"@fr ;
+	rdfs:subPropertyOf dcterms:contributor ;
+	rdfs:domain debate:Debate ;
+	rdfs:range prov:Organization ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:websiteDebate
+	a owl:ObjectProperty ;
+	rdfs:label "site du débat"@fr ;
+	rdfs:label "debate debate"@en ;
+	rdfs:comment "URI du site Web du débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .	
+	
+debate:websiteProjectOwner
+	a owl:ObjectProperty ;
+	rdfs:label "maîtrise d'ouvrage"@fr ;
+	rdfs:label "website project owner"@en ;
+	rdfs:comment "URI du site Web de la maîtrise d'ouvrage du débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:officialDocument
+	a owl:ObjectProperty ;
+	rdfs:label "document officiel"@fr ;
+	rdfs:label "official document"@en ;
+	rdfs:comment "Document officiel instaurant le débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:informationNote
+	a owl:ObjectProperty ;
+	rdfs:label "notice explicative"@fr ;
+	rdfs:label "information note"@en ;
+	rdfs:comment "Notice explicative formelle présentant le débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:decision
+	a owl:ObjectProperty ;
+	rdfs:label "prise de décision"@fr ;
+	rdfs:label "decision"@en ;
+	rdfs:comment "Document notifiant la prise de décision d'ouvrir le débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:extension
+	a owl:ObjectProperty ;
+	rdfs:label "extension"@fr ;
+	rdfs:label "extension"@en ;
+	rdfs:comment "Document de notification de la prolongation du débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:synthesis
+	a owl:ObjectProperty ;
+	rdfs:label "synthèse"@fr ;
+	rdfs:label "synthesis"@en ;
+	rdfs:comment "Document de synthèse du débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:expertise
+	a owl:ObjectProperty ;
+	rdfs:label "document d'expertise"@fr ;
+	rdfs:label "expertise document"@en ;
+	rdfs:comment "Document produit par des experts sur le débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:assessment
+	a owl:ObjectProperty ;
+	rdfs:label "bilan"@fr ;
+	rdfs:label "assessment"@en ;
+	rdfs:comment "Document de bilan du débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+	
+debate:verbatim
+	a owl:ObjectProperty ;
+	rdfs:label "verbatim"@fr ;
+	rdfs:label "verbatim"@en ;
+	rdfs:comment "Verbatim des participants au débat"@fr ;
+	rdfs:subPropertyOf dcterms:relation ;
+	rdfs:domain debate:Debate ;
+	rdfs:isDefinedBy <http://data.vie-publique.fr/debatescore/debate> .
+
+	
+### Valeurs contrôlées : statuts de débat ###
+
+skos:inScheme
+	a owl:ObjectProperty ;
+	rdfs:domain  skos:Concept ;
+	rdfs:range skos:ConceptScheme .
+	
+<http://data.vie-publique.fr/debatescore/status>
+	a skos:ConceptScheme ;
+	rdfs:label "Statuts de débat"@fr ;
+	rdfs:label "Status of a debate"@en ;
+	rdfs:comment "Valeurs contrôlées pour le statut d'un débat"@fr.
+
+status:examen
+	a skos:Concept ;
+	skos:prefLabel "examen"@fr ;
+	rdfs:label "exam"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/status> .
+	
+status:aVenir
+	a skos:Concept ;
+	skos:prefLabel "à venir"@fr ;
+	rdfs:label "to come"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/status> .
+
+status:enCours
+	a skos:Concept ;
+	skos:prefLabel "en cours"@fr ;
+	rdfs:label "in progress"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/status> .
+	
+status:sansSuite
+	a skos:Concept ;
+	skos:prefLabel "sans suite"@fr ;
+	rdfs:label "without result"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/status> .
+	
+status:abandonne
+	a skos:Concept ;
+	skos:prefLabel "abandonné"@fr ;
+	rdfs:label "abandoned"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/status> .
+	
+status:termine
+	a skos:Concept ;
+	skos:prefLabel "terminé"@fr ;
+	rdfs:label "finished"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/status> .
+	
+### Valeurs contrôlées : types de débat ###
+	
+<http://data.vie-publique.fr/debatescore/type>
+	a skos:ConceptScheme ;
+	rdfs:label "Types de débat"@fr ;
+	rdfs:label "Types of debate"@en ;
+	rdfs:comment "Valeurs contrôlées pour le type d'un débat"@fr.
+		
+type:enquetePublique
+	a skos:Concept ;
+	skos:prefLabel "enquête publique"@fr ;
+	rdfs:label "public pool"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/type> .
+	
+type:consultation
+	a skos:Concept ;
+	skos:prefLabel "consultation"@fr ;
+	rdfs:label "consultation"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/type> .
+	
+type:debatPublic
+	a skos:Concept ;
+	skos:prefLabel "débat public"@fr ;
+	rdfs:label "public debate"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/type> .
+	
+type:concertation
+	a skos:Concept ;
+	skos:prefLabel "concertation"@fr ;
+	rdfs:label "concertation"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/type> .
+	
+type:mediation
+	a skos:Concept ;
+	skos:prefLabel "médiation"@fr ;
+	rdfs:label "mediation"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/type> .
+	
+### Valeurs contrôlées : modes de débat ###
+## controlled values of methods of debate ##
+	
+<http://data.vie-publique.fr/debatescore/mode>
+	a skos:ConceptScheme ;
+	rdfs:label "Modes de débat"@fr ;
+	rdfs:label "Methods of debate"@en ;
+	rdfs:comment "Valeurs contrôlées pour le mode d'un débat"@fr.
+		
+mode:presentiel
+	a skos:Concept ;
+	skos:prefLabel "présentiel"@fr ;
+	rdfs:label "in situ"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/mode> .
+	
+mode:enLigne
+	a skos:Concept ;
+	skos:prefLabel "en ligne"@fr ;
+	rdfs:label "online"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/mode> .
+	
+### Valeurs contrôlées : audiences ###
+	
+<http://data.vie-publique.fr/debatescore/audience>
+	a skos:ConceptScheme ;
+	rdfs:label "Audiences de débat"@fr ;
+	rdfs:label "audiences of the debate"@en ;
+	rdfs:comment "Valeurs contrôlées pour les publics appelés à participer à un débat"@fr.
+	
+audience:institutionnels
+	a skos:Concept ;
+	skos:prefLabel "institutionnels"@fr ;
+	rdfs:label "institutionals"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/audience> .
+	
+audience:experts
+	a skos:Concept ;
+	skos:prefLabel "experts"@fr ;
+	rdfs:label "experts"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/audience> .
+	
+audience:representants
+	a skos:Concept ;
+	skos:prefLabel "représentants"@fr ;
+	rdfs:label "delegates"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/audience> .
+	
+audience:toutPublic
+	a skos:Concept ;
+	skos:prefLabel "tout public"@fr ;
+	rdfs:label "all public"@en ;
+	skos:inScheme <http://data.vie-publique.fr/debatescore/audience> .
+	
