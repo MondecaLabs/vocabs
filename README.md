@@ -4,6 +4,6 @@ So please, here you will only find the development repo and will each time point
 Stay tune.
 
 ## debatescore
-  HTML documentation: http://goo.gl/d712R4
+  HTML documentation using LODE tool: http://www.essepuntato.it/lode/owlapi/https://raw.githubusercontent.com/MondecaLabs/vocabs/master/debatescore.ttl
 
 
